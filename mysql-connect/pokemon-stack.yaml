@@ -1,0 +1,67 @@
+---
+  template:
+    templateName: Pokemon-Stack
+    templateVersion: 1.0.0
+    templateDescription: Stack to create ACCS with MtSQLCS
+    parameters:
+      mySQLPwd:
+        label: MySQL Admin Password
+        description: Password for MySQL Administrator
+        type: String
+        mandatory: true
+        default: P@ssw0rd
+        sensitive: true
+      PokemonAppJavaURL:
+        label: Pokemon Java App Archive URL
+        description: Location inside Storage Congtainer where Java App Archive is uploaded
+        type: String
+        mandatory: true
+        default: ACCS/mysql -connect-1.0.0-SNAPSHOT.zip
+      publicKeyText:
+        label: Public Key Text
+        description: Public Key Text for Accessing the provisioned vms
+        type: ssh
+        mandatory: true
+        default: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDnKcDMzNceTPSV+l963N1TZ7aQn5UKojzaLR+sczRNXTiOYktAn8I630DyE/DndFKjgaYxd0+PahdBh9nXh18xmmfN1j2U+i/KqBdbTx/kR0+rQyaXWjZbLzbZmyLZ5gxN17nh1As6E5q+uE1sqCsxDR+gKgU9/NUhwtsKJPfffN0iQ+WWW37hHmhdBhLt8YdwI584+LmfltGpXh/nlGSbFpidb8rKJ4KRhy/auKQHeait/9P5+BB/OuQn6BLV/Raxyq9Gw5Y9TxNo6baZAXNYZnv69NXi2lwL7uDc8z4wRd5RpT3f5DIwJDnPx5VH99MUitijO5E+3KOZ8WHVV/aaFfBMYqyFR9egI1pg974X8CoMUDmUNh8V6n1tYP+VKDOkfKE8XbiTlEnXwfsZKX5rfv3hTgnpbWmse4iyvcapDcVERAfusNhWzDK2bONJ2NzlDqxChuQ13+Tn1QGGEqNteaOU8wovelCW4KabQPXKzd8D2qQZmTxKIpNnBQMd+1A6hHhImbV67V32uYbG6L9pjDkFDgX0Pl7BfzsmCu4KQjr4T8mStnqo1ESN5Pd3fKEBynGOQ/GyjHt19LdW5rPqwasd7eoX4AGk5qinFexO1NyVZAoCK41lc2B0IG+uzonnrQQLvZTgHFlI7wmKj5aegvJ2FNs3zGGyxYlz3WQeVw== shinya.com@gmail.com"
+        sensitive: true
+    resources:
+      PokemonMySQL:
+        type: MySQLCS
+        parameters:
+             serviceParameters:
+                serviceName: MyDB
+                serviceLevel: PAAS
+                subscription: HOURLY
+                serviceDescription: Customer Database for Pokemon Data
+                serviceVersion: 5.7
+                vmPublicKeyText:
+                    Fn::GetParam: publicKeyText
+                backupDestination: NONE
+             componentParameters:
+                mysql:
+                  shape: oc3
+                  mysqlUserName: root
+                  mysqlUserPassword:
+                    Fn::GetParam: mySQLPwd
+      PokemonAppJava:
+        type: apaas
+        parameters:
+            name: PokemonApp
+            runtime: java
+            subscription: MONTHLY
+            archiveURL:
+                Fn::GetParam: PokemonAppJavaURL
+            deployment:
+                memory: 1G
+                instances: 1
+                services:
+                      -
+                        identifier: MySQLBinding
+                        name:
+                          Fn::GetAtt:
+                            - PokemonMySQL
+                            - serviceName
+                        type: MySQLCS
+                        username: root
+                        password:
+                          Fn::GetParam: mySQLPwd

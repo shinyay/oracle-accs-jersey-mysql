@@ -1,0 +1,14 @@
+{
+  "memory": "1G",
+  "instances": "1",
+  "notes": "Deploymeent test",
+  "services": [
+  {
+    "identifier": "MyPokemonDB",
+    "name": "MyDB",
+    "type": "MySQLCS",
+    "username": "root",
+    "password": "P@ssw0rd"
+  }
+]
+}
