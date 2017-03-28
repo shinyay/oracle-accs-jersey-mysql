@@ -11,6 +11,11 @@ Application logic is very simple. When it accepts the GET request, it shows data
 
 ![jersey_and_jpa](docs/images/jersey_and_jpa_e.png)
 
+### Service Binding
+![servicebinding](docs/images/servicebinding.png)
+
+Service Binding enables you to use other Cloud Services as Backend Resource, which realize **[The Twelve-Factor App: Backing services](https://12factor.net/backing-services)**.
+
 ## Demo
 ![Demo](docs/images/accs_with_mysql_demo.gif)
 
