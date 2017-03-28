@@ -6,7 +6,7 @@
     <groupId>com.oralce.jp.shinyay.rest</groupId>
     <artifactId>mysql-connect</artifactId>
     <packaging>jar</packaging>
-    <version>1.0.0T</version>
+    <version>1.0.0</version>
     <name>mysql-connect</name>
 
     <properties>
