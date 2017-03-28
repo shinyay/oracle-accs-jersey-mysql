@@ -9,6 +9,8 @@ This application is composed with Jersey as JAX-RS and Hibernate as JPA. And Ora
 
 Application logic is very simple. When it accepts the GET request, it shows data stored in MySQL.
 
+![jersey_and_jpa](docs/images/jersey_and_jpa_e.png)
+
 ## Demo
 ![Demo](docs/images/accs_with_mysql_demo.gif)
 
